@@ -81,17 +81,8 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Flutter 3.38.10 (pinned to upstream)
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 3
-          timeout_minutes: 10
-          command: |
-            curl -sSL https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.10-stable.tar.xz -o /tmp/flutter.tar.xz
-            echo "385e2629a0a585a835f351ca1605d2c7996377ce2fa16e68296e8fc9a78ccf7a  /tmp/flutter.tar.xz" | sha256sum -c -
-            mkdir -p $HOME/flutter
-            tar -xf /tmp/flutter.tar.xz -C $HOME/flutter
-            echo "$HOME/flutter/bin" >> $GITHUB_PATH
+      - name: Set up Flutter 3.38.10 (uses upstream's composite action)
+        uses: ./.github/actions/setup-flutter
 
       - name: Flutter doctor
         run: flutter doctor
