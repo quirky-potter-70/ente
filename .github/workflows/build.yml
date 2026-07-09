@@ -63,8 +63,13 @@ jobs:
         id: tags
         run: |
           set -euo pipefail
-          PHOTOS=$(git tag -l 'photos-v*' --sort=-v:refname | head -1 || true)
-          AUTH=$(git tag -l 'auth-v*'   --sort=-v:refname | head -1 || true)
+          # Only stable releases: photos-v1.2.3 (not -rc, -beta, etc.)
+          PHOTOS=$(git tag -l 'photos-v*' --sort=-v:refname \
+                   | grep -E '^photos-v[0-9]+\.[0-9]+\.[0-9]+$' \
+                   | head -1 || true)
+          AUTH=$(git tag -l 'auth-v*' --sort=-v:refname \
+                 | grep -E '^auth-v[0-9]+\.[0-9]+\.[0-9]+$' \
+                 | head -1 || true)
           echo "Photos tag: ${PHOTOS:-none}"
           echo "Auth tag:   ${AUTH:-none}"
           echo "photos=${PHOTOS}" >> $GITHUB_OUTPUT
@@ -142,7 +147,7 @@ jobs:
           ORIG_NOWEB=$(git rev-parse noweb)
           PATCH_BASE=$(git merge-base "$ORIG_NOWEB" upstream/main)
 
-          git checkout -B main upstream/"$PHOTOS_TAG"
+          git checkout -B main "$PHOTOS_TAG"
           git push -f origin main
 
           git checkout -B noweb main
@@ -209,7 +214,7 @@ jobs:
           ORIG_NOWEB=$(git rev-parse noweb)
           PATCH_BASE=$(git merge-base "$ORIG_NOWEB" upstream/main)
 
-          git checkout -B main upstream/"$AUTH_TAG"
+          git checkout -B main "$AUTH_TAG"
           git push -f origin main
 
           git checkout -B noweb main
