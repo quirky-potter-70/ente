@@ -33,7 +33,7 @@ class PlatformUtil {
       url,
       mode: PlatformDetector.isDesktop()
           ? LaunchMode.externalApplication
-          : LaunchMode.inAppBrowserView,
+          : LaunchMode.externalApplication,
       browserConfiguration: const BrowserConfiguration(showTitle: true),
     );
   }
