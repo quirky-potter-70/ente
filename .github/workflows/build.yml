@@ -55,6 +55,9 @@ jobs:
         run: |
           git remote add upstream https://github.com/ente-io/ente.git
           git fetch upstream --tags --no-recurse-submodules
+          # CI runner has no git identity by default; cherry-pick needs one.
+          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
 
       # ------------------------------------------------------------------
       # Resolve latest tag per app
