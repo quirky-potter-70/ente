@@ -132,12 +132,21 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          # Sync main to the photos tag, rebase noweb, push
-          git checkout main
-          git reset --hard upstream/"$PHOTOS_TAG"
+          # actions/checkout only creates a local branch for `ref:` (noweb);
+          # `main` exists only as origin/main. Use -B to create/reset.
+          #
+          # Replay our patch commits onto the upstream tag via cherry-pick.
+          # We snapshot the current noweb tip first, then find the merge-base
+          # with upstream/main (the point where our patches diverged), then
+          # cherry-pick everything from that base up to the snapshot.
+          ORIG_NOWEB=$(git rev-parse noweb)
+          PATCH_BASE=$(git merge-base "$ORIG_NOWEB" upstream/main)
+
+          git checkout -B main upstream/"$PHOTOS_TAG"
           git push -f origin main
-          git checkout noweb
-          git rebase main
+
+          git checkout -B noweb main
+          git cherry-pick "$PATCH_BASE".."$ORIG_NOWEB"
           git push -f origin noweb
 
           # Pub get + Rust codegen (Photos uses flutter_rust_bridge bindings)
@@ -195,12 +204,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          # Sync main to the auth tag, rebase noweb, push
-          git checkout main
-          git reset --hard upstream/"$AUTH_TAG"
+          # Same pattern as the Photos step: snapshot noweb, find merge-base,
+          # cherry-pick our patches onto the upstream auth tag.
+          ORIG_NOWEB=$(git rev-parse noweb)
+          PATCH_BASE=$(git merge-base "$ORIG_NOWEB" upstream/main)
+
+          git checkout -B main upstream/"$AUTH_TAG"
           git push -f origin main
-          git checkout noweb
-          git rebase main
+
+          git checkout -B noweb main
+          git cherry-pick "$PATCH_BASE".."$ORIG_NOWEB"
           git push -f origin noweb
 
           # Auth does not run Rust codegen (bindings are pre-generated)
