@@ -354,7 +354,7 @@ class _FeedScreenState extends State<FeedScreen> {
         routeToPage(
           context,
           DetailPage(DetailPageConfiguration([file], 0, "feed_item")),
-          forceCustomPageRoute: true,
+          useFadeTransition: true,
         ),
       );
       return true;
@@ -392,7 +392,7 @@ class _FeedScreenState extends State<FeedScreen> {
             },
           ),
         ),
-        forceCustomPageRoute: true,
+        useFadeTransition: true,
       ),
     );
     return true;
@@ -732,7 +732,7 @@ class _FeedScreenState extends State<FeedScreen> {
           CollectionWithThumbnail(collection, null),
           fileToJumpTo: fileToJumpTo,
         ),
-        forceCustomPageRoute: true,
+        useFadeTransition: true,
       ),
     );
   }
@@ -809,7 +809,7 @@ class _FeedScreenState extends State<FeedScreen> {
             },
           ),
         ),
-        forceCustomPageRoute: true,
+        useFadeTransition: true,
       ),
     );
     if (shouldDisableForwardHero) {
@@ -848,7 +848,7 @@ class _FeedScreenState extends State<FeedScreen> {
         DetailPage(
           DetailPageConfiguration([file], 0, heroTagPrefix ?? "feed_item"),
         ),
-        forceCustomPageRoute: true,
+        useFadeTransition: true,
       ),
     );
   }
@@ -891,7 +891,7 @@ class _FeedScreenState extends State<FeedScreen> {
             heroTagPrefix ?? "feed_shared_photos",
           ),
         ),
-        forceCustomPageRoute: true,
+        useFadeTransition: true,
       ),
     );
   }

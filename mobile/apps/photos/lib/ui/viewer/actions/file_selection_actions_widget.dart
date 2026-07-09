@@ -766,7 +766,7 @@ class _FileSelectionActionsWidgetState
     final result = await routeToPage(
       context,
       AddFilesToPersonPage(files: filesWithIds, initialPersons: namedPersons),
-      forceCustomPageRoute: true,
+      useFadeTransition: true,
     );
     if (result is! ManualPersonAssignmentResult) {
       return;
@@ -825,7 +825,7 @@ class _FileSelectionActionsWidgetState
         ),
       );
       await localSettings.setOnGuestView(true);
-      routeToPage(context, page, forceCustomPageRoute: true).ignore();
+      routeToPage(context, page, useFadeTransition: true).ignore();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Bus.instance.fire(GuestViewEvent(true, false));
       });

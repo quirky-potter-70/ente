@@ -1299,7 +1299,6 @@ class MemoriesCacheService {
       await _routeToPage(
         DetailPage(DetailPageConfiguration([file], 0, "memorywidget-fallback")),
         context: context,
-        forceCustomPageRoute: true,
       );
       return;
     }
@@ -1311,7 +1310,6 @@ class MemoriesCacheService {
         isFromWidgetOrNotifications: true,
       ),
       context: context,
-      forceCustomPageRoute: true,
     );
   }
 
@@ -1340,7 +1338,6 @@ class MemoriesCacheService {
         isFromWidgetOrNotifications: true,
       ),
       context: context,
-      forceCustomPageRoute: true,
     );
   }
 
@@ -1386,7 +1383,6 @@ class MemoriesCacheService {
       await _routeToPage(
         PeoplePage(person: person, searchResult: null),
         context: context,
-        forceCustomPageRoute: true,
       );
       return;
     }
@@ -1402,28 +1398,16 @@ class MemoriesCacheService {
         ),
       ),
       context: context,
-      forceCustomPageRoute: true,
     );
   }
 
-  Future<void> _routeToPage(
-    Widget page, {
-    BuildContext? context,
-    bool forceCustomPageRoute = false,
-  }) async {
+  Future<void> _routeToPage(Widget page, {BuildContext? context}) async {
     if (context != null) {
-      await routeToPage(
-        context,
-        page,
-        forceCustomPageRoute: forceCustomPageRoute,
-      );
+      await routeToPage(context, page, useFadeTransition: true);
       return;
     }
 
-    await AppNavigationService.instance.pushPage(
-      page,
-      forceCustomPageRoute: forceCustomPageRoute,
-    );
+    await AppNavigationService.instance.pushPage(page, useFadeTransition: true);
   }
 
   Future<void> toggleOnThisDayNotifications() async {

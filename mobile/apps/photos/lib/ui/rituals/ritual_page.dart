@@ -1298,7 +1298,7 @@ Future<void> _openRitualAlbumAndFile(
     DetailPage(
       DetailPageConfiguration(files, selectedIndex, "ritual_${ritual.id}"),
     ),
-    forceCustomPageRoute: true,
+    useFadeTransition: true,
   ).ignore();
 }
 

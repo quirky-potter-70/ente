@@ -1221,7 +1221,7 @@ class _GalleryAppBarWidgetState extends State<GalleryAppBarWidget> {
         ),
       );
       await localSettings.setOnGuestView(true);
-      routeToPage(context, page, forceCustomPageRoute: true).ignore();
+      routeToPage(context, page, useFadeTransition: true).ignore();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Bus.instance.fire(GuestViewEvent(true, false));
       });
